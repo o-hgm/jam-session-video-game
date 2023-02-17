@@ -15,3 +15,7 @@ implement the stories, assets and code to provide a first prototype of a game.
 ## Getting Started
 
 > To be done
+
+
+## Resources
+
