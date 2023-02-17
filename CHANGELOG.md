@@ -1,8 +1,9 @@
 # 17 Febrero 2023
 
 
-**20:20 - Repositorio Creado**
+**20:20 - Decisiones de juego**
 
+Trabajando con chatgpt para sacar decisiones de juego
 
 **18:00 - Comenzamos**
 
