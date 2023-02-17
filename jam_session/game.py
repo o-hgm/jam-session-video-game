@@ -6,14 +6,29 @@ from jam_session.lib.base.keyboard_event import keyboard_event_loop
 
 from jam_session.settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
+class Asset:
+    pass
+
+class AnimatedAsset(Asset):
+    pass
+
 
 def start_game():
     game_surface, game_clock = initialize_game_surface(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
 
     asset_scene_start_game_title = pygame.image.load('./jam_session/resources/sprites/scene_start_game_title.png')
+    asset_scene_start_game_new_game = pygame.image.load('./jam_session/resources/sprites/scene_start_game_new_game.png')
 
-    asset_position_x = (WINDOW_WIDTH - asset_scene_start_game_title.get_width())/2
-    asset_position_y = (WINDOW_WIDTH - asset_scene_start_game_title.get_height())/2
+    asset_position_title_x = (WINDOW_WIDTH - asset_scene_start_game_title.get_width())/2
+    asset_position_title_y = (WINDOW_WIDTH - asset_scene_start_game_title.get_height())/2
+
+    game_surface.blit(asset_scene_start_game_title, (asset_position_title_x, asset_position_title_y))
+
+    asset_offset_y = 100
+    asset_position_x = (WINDOW_WIDTH - asset_scene_start_game_new_game.get_width())/2
+    asset_position_y = asset_offset_y + (WINDOW_WIDTH - asset_scene_start_game_new_game.get_height())/2
+
+    game_surface.blit(asset_scene_start_game_new_game, (asset_position_x, asset_position_y))
 
     game_surface.blit(asset_scene_start_game_title, (asset_position_x, asset_position_y))
 
@@ -25,7 +40,23 @@ def start_game():
         keyboard_event_loop()
         pygame.display.update()
         asset_position_x, asset_position_y = pj_move(game_surface, asset_position_x, asset_position_y)
+    from itertools import cycle
 
+    asset_animation = [asset_scene_start_game_new_game, None]
+    asset_animation_iterator = cycle(asset_animation)
+    
+    while True:
+        keyboard_event_loop()
+
+
+        next_sprite = next(asset_animation_iterator)
+        game_surface.fill((0,0,0))
+        game_surface.blit(asset_scene_start_game_title, (asset_position_title_x, asset_position_title_y))
+        if next_sprite:
+            game_surface.blit(next_sprite, (asset_position_x, asset_position_y))
+
+        game_clock.tick(4)
+        pygame.display.update()
 
 if __name__ == "__main__":
     start_game()
