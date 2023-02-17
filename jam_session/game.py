@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pygame
 
 from jam_session.lib.pygame_utils.create_surface import initialize_game_surface
