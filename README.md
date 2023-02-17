@@ -15,7 +15,9 @@ implement the stories, assets and code to provide a first prototype of a game.
 ## Getting Started
 
 > To be done
-
+> Instalar pipenv con: pip install pipenv.
+> Instalar dependencias: pipenv install
+> Ejecutar el juego: pipenv run jam-session
 
 ## Resources
 
