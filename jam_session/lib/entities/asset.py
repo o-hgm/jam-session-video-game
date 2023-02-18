@@ -27,7 +27,6 @@ class Asset(Sprite):
         self.rect.center = self.get_coordinates()
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self.position_x += 10
         self.update_rect_position()
         return super().update(*args, **kwargs)
     

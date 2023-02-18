@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 from jam_session.lib.entities.principalpj_sprite import PrincipalPjSprite
 import pygame
+from jam_session.lib.entities.game_state import GameState
 
 from jam_session.lib.pygame_utils.create_surface import initialize_game_surface
 from jam_session.lib.base.keyboard_event import keyboard_event_loop
+from jam_session.lib.stages.main_menu import MainMenuStage
 
 from jam_session.settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
 from jam_session.lib.entities import asset
 
+<<<<<<< Updated upstream
 class Asset:
     pass
 
@@ -108,14 +111,13 @@ class MainMenuStage(Stage):
         game_title = asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
         return [game_title]
 
+=======
+>>>>>>> Stashed changes
 def start_game():
     game_state = GameState()
     game_state.game_surface, game_state.game_clock = initialize_game_surface(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
     game_state.current_stage = MainMenuStage(game_state=game_state)
-
     game_state.play()
-
-
 
 
 if __name__ == "__main__":
