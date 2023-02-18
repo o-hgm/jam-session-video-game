@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from jam_session.lib.entities.principalpj_sprite import PrincipalPjSprite
 import pygame
 
 from jam_session.lib.pygame_utils.create_surface import initialize_game_surface
@@ -62,9 +63,13 @@ class AnimatedAsset(Asset):
 
 class GameState:
     def __init__(self) -> None:
+        pygame.init()
         self.current_stage = None
-        self.game_surface = None
-        self.game_clock = None
+        pygame.display.set_caption("title")
+    
+        self.game_clock = pygame.time.Clock()
+        self.game_surface = pygame.display.set_mode((800, 800))
+        self.player_object = PrincipalPjSprite(200, 200)
     
     def play(self):
         self.current_stage.initialize()
@@ -72,6 +77,7 @@ class GameState:
             self.game_surface.fill((0,0,0))
             if self.current_stage:
                 self.current_stage.run_iteration()
+                self.player_object.draw(self.game_surface)
             pygame.display.update()
             self.game_clock.tick(4)
 
