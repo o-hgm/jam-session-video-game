@@ -11,7 +11,6 @@ from jam_session.settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
 from jam_session.lib.entities import asset
 
-<<<<<<< Updated upstream
 class Asset:
     pass
 
@@ -111,8 +110,6 @@ class MainMenuStage(Stage):
         game_title = asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
         return [game_title]
 
-=======
->>>>>>> Stashed changes
 def start_game():
     game_state = GameState()
     game_state.game_surface, game_state.game_clock = initialize_game_surface(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
