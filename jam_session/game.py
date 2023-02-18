@@ -6,6 +6,8 @@ from jam_session.lib.base.keyboard_event import keyboard_event_loop
 
 from jam_session.settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
+from jam_session.lib.entities import asset
+
 class Asset:
     pass
 
@@ -65,6 +67,7 @@ class GameState:
         self.game_clock = None
     
     def play(self):
+        self.current_stage.initialize()
         while True:
             self.game_surface.fill((0,0,0))
             if self.current_stage:
@@ -75,20 +78,29 @@ class GameState:
 
 class Stage:
     def __init__(self, game_state: GameState) -> None:
-        from jam_session.lib.entities import asset
         self.game_state = game_state
-        self.asset_example = asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
-        self.asset_groups = pygame.sprite.Group()
-        self.asset_groups.add(self.asset_example)
-
+        self.asset_group = None
+        self.asset_objects = []
 
     def run_iteration(self):
-        self.asset_groups.update()
-        self.asset_groups.draw(self.game_state.game_surface)
+        self.asset_group.update()
+        self.asset_group.draw(self.game_state.game_surface)
+
+    def load_assets(self):
+        raise NotImplementedError()
+    
+    def initialize(self):
+        self.asset_group = pygame.sprite.Group()
+
+        for asset_object in self.load_assets():
+             self.asset_group.add(asset_object)
+            
 
 
 class MainMenuStage(Stage):
-    pass
+    def load_assets(self):
+        game_title = asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
+        return [game_title]
 
 def start_game():
     game_state = GameState()
