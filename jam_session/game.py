@@ -77,6 +77,7 @@ class GameState:
         self.current_stage.initialize()
         while True:
             self.game_surface.fill((0,0,0))
+            
             if self.current_stage:
                 self.current_stage.run_iteration()
                 self.player_object.draw(self.game_surface)
