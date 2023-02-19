@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from jam_session.lib.entities.principalpj_sprite import PrincipalPjSprite
+from jam_session.lib.entities.player import Player
 import pygame
 from jam_session.lib.entities.game_state import GameState
 
@@ -71,7 +71,7 @@ class GameState:
     
         self.game_clock = pygame.time.Clock()
         self.game_surface = pygame.display.set_mode((800, 800))
-        self.player_object = PrincipalPjSprite(200, 200)
+        self.player_object = Player(WINDOW_WIDTH, WINDOW_HEIGHT)
     
     def play(self):
         self.current_stage.initialize()
