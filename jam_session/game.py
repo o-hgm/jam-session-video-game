@@ -75,11 +75,13 @@ class GameState:
     
     def play(self):
         self.current_stage.initialize()
+        self.current_stage.asset_group.add(self.player_object)
         while True:
             self.game_surface.fill((0,0,0))
+            keyboard_event_loop()
             if self.current_stage:
                 self.current_stage.run_iteration()
-                self.player_object.draw(self.game_surface)
+                # self.player_object.draw(self.game_surface)
             pygame.display.update()
             self.game_clock.tick(4)
 
@@ -107,7 +109,7 @@ class Stage:
 
 class MainMenuStage(Stage):
     def load_assets(self):
-        game_title = asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
+        game_title = asset.Asset.from_image_resource('./jam_session/resources/sprites/scene_start_game_title.png', y_origin=200)
         return [game_title]
 
 def start_game():
@@ -143,5 +145,4 @@ def pj_move(game_surface, position_x, position_y):
     # Dibujar la imagen en la pantalla
     game_surface.blit(asset_pj, (position_x, position_y))
     # Actualizar la pantalla
-    pygame.display.update()
     return position_x, position_y

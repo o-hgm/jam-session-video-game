@@ -1,5 +1,7 @@
 import pygame
 
+from jam_session.lib.base.keyboard_event import keyboard_event_loop
+
 
 class GameState:
     def __init__(self) -> None:
@@ -10,6 +12,7 @@ class GameState:
     def play(self):
         self.current_stage.initialize()
         while True:
+            keyboard_event_loop()
             self.game_surface.fill((0,0,0))
             if self.current_stage:
                 self.current_stage.run_iteration()

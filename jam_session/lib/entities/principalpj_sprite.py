@@ -23,6 +23,3 @@ class PrincipalPjSprite(pygame.sprite.Sprite):
 
     def update(self):
         pass
-
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
