@@ -1,0 +1,4 @@
+class GameInterface:
+    """
+    """
+    pass

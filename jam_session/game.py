@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from jam_session.lib.components.game import Game
 from jam_session.lib.entities.player import Player
 import pygame
 from jam_session.lib.entities.game_state import GameState
@@ -112,14 +113,12 @@ class MainMenuStage(Stage):
         return [game_title]
 
 def start_game():
-    game_state = GameState()
-    game_state.game_surface, game_state.game_clock = initialize_game_surface(width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
-    game_state.current_stage = MainMenuStage(game_state=game_state)
-    game_state.play()
-
+    game_state = Game.get_default()
+    game_state.start()
 
 if __name__ == "__main__":
     start_game()
+
 
 def pj_move(game_surface, position_x, position_y):
     asset_pj = pygame.image.load('./jam_session/resources/characters/pj.png')

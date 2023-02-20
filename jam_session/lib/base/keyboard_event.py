@@ -17,12 +17,12 @@ def keyboard_event_loop(player : Player):
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        elif event.type == pygame.KEYDOWN:
+        elif event.key == pygame.KEYDOWN:
             player.set_move_direction(Player.MOVE_DOWN)
-        elif event.type == pygame.KEYUP:
+        elif event.key == pygame.KEYUP:
             player.set_move_direction(Player.MOVE_UP)
-        elif event.type == pygame.KEYRIGHT:
+        elif event.key == pygame.KEYRIGHT:
             player.set_move_direction(Player.MOVE_RIGHT)
-        elif event.type == pygame.KEYLEFT:
+        elif event.key == pygame.KEYLEFT:
             player.set_move_direction(Player.MOVE_LEFT)
         
