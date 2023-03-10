@@ -34,6 +34,12 @@ class Game:
             self.game_interface.draw()
             self.game_clock.tick(self.frame_rate)
 
+    def set_player(player_obj: Player) -> None:
+        pass
+
+    def add_player_npc(npc_obj: Npc) -> None:
+        pass
+
 
 def create_game() -> Game:
     """
@@ -44,4 +50,5 @@ def create_game() -> Game:
     game_instance.event_handler = DefaultEventHandler()
     game_instance.game_interface = DefaultUserInterface()
     
+
     return game_instance
