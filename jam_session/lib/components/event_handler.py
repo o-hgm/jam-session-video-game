@@ -2,7 +2,7 @@
 * [-] Copiar código de gestión de eventos del módulo antiguo
 * [ ] Añadir add_event_action y gestionarlo
 """
-from typing import Tuple, Callable
+from typing import Iterable, Tuple, Callable
 
 import pygame.event
 
@@ -18,12 +18,13 @@ class DefaultEventHandler:
     def __init__(self, *args, **kwargs):
         self.event_actions = []
     
-    def add_event_action(self, event_action: EventAction) -> None:
+    def add_event_actions(self, *event_actions: Iterable[EventAction]) -> None:
         """
         Que ocurre si el evento existe?
         Se puede eliminar un evento cargado?
         """
-        self.event_actions.append(event_action)
+        for event_action in event_actions:
+            self.event_actions.append(event_action)
 
 
     def check_events(self):

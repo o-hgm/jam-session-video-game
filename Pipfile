@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 pygame = "*"
 click = "*"
-jam-session-pygame = {editable = true, path = "."}
 pygame-gui = "*"
+jam-session-pygame = {editable = true, path = "."}
 
 [dev-packages]
 

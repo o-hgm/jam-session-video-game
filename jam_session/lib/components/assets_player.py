@@ -10,6 +10,8 @@ from typing import Tuple, Callable
 from pygame import locals as pygame_constants
 
 import pygame.sprite
+
+from jam_session.lib.components.event_handler import EventAction
 from jam_session.lib.components.assets_default import Asset
 
 class Player(Asset):
