@@ -19,7 +19,6 @@ class Asset(Sprite):
     def setup(self, *args, **kwargs) -> None:
         self.rect = self.image.get_rect()
         
-
     def get_coordinates(self) -> Tuple[int, int]:
         return self.position_x, self.position_y
 

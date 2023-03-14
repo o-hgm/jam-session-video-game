@@ -4,7 +4,7 @@ import pygame.sprite
 
 
 class DefaultUserInterface:
-    DEFAULT_COLOR = (0,0,0)
+    DEFAULT_COLOR = (100,0,0)
 
     def __init__(self, ui_width: int = 800, ui_height: int = 800) -> None:
         self.ui_width = ui_width

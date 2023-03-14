@@ -11,7 +11,7 @@ from pygame import locals as pygame_constants
 
 import pygame.sprite
 
-from jam_session.lib.components.event_handler import EventAction
+from jam_session.lib.components.event_handler import KeyboardEventAction
 from jam_session.lib.components.assets_default import Asset
 
 class Player(Asset):
@@ -33,14 +33,16 @@ class Player(Asset):
         self.move_direction = Player.MOVE_UP
         self.move_status = Player.STATUS_MOVE_IDLE
 
-    def get_event_actions(self) -> Tuple[EventAction]:
-        move_up = EventAction(
-            event_type=(pygame_constants.KEYDOWN, pygame_constants.K_UP),
-            event_action=self.action_move_up
+    def get_event_actions(self) -> Tuple[KeyboardEventAction]:
+        move_up = KeyboardEventAction(
+            key=(pygame_constants.KEYDOWN, pygame_constants.K_UP),
+            method_to_call=self.action_move_up,
+            target_object=self,
         )
-        move_halt=EventAction(
-            event_type=(pygame_constants.KEYUP, pygame_constants.K_UP),
-            event_action=self.set_move_stop
+        move_halt=KeyboardEventAction(
+            key=(pygame_constants.KEYUP, pygame_constants.K_UP),
+            method_to_call=self.action_move_stop,
+            target_object=self,
         )
 
         return [move_up, move_halt]
@@ -56,14 +58,15 @@ class Player(Asset):
             self.current_frame = self.STATUS_MOVE_IDLE
 
 
-    def action_move_up(self):
+    def action_move_up(self, *args, **kwargs) -> None:
         """
         Codigo para definir dirección y estado
         """
-        pass
+        self.set_move_direction(self.MOVE_UP)
+        self.set_move_status(self.STATUS_MOVE_ACTIVE)
 
 
-    def action_move_stop(self):
+    def action_move_stop(self, *args, **kwargs) -> None:
         """
         Codigo para definir dirección y estado
         """

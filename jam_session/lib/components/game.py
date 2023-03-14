@@ -2,12 +2,14 @@ from typing import List
 
 import pygame
 import pygame.sprite
+from pygame import locals as pygame_constants
 
+from jam_session.lib.components import assets_default
 from jam_session.lib.components.assets_default import Asset
 from jam_session.lib.components.assets_player import Player
 from jam_session.lib.components.assets_npc import NoPlayerCharacter
 
-from jam_session.lib.components.event_handler import DefaultEventHandler
+from jam_session.lib.components.event_handler import DefaultEventHandler, KeyboardEventAction
 from jam_session.lib.components.user_interface import DefaultUserInterface
 
 
@@ -33,14 +35,17 @@ class Game:
         self.is_running = True
         self.game_interface.initialize()
         while self.is_running:
-            print("A")
             self.event_handler.check_events()
-            print("B")
             self.group_container.update()
-            print("C")
             self.game_interface.draw()
-            print("D")
             self.game_clock.tick(self.frame_rate)
+
+    def stop(self)-> None:
+        self.is_running = False
+
+    def include_asset(self, asset_obj: Asset) -> None:
+        self.object_list.append(asset_obj)
+        self.game_interface.add_asset(asset_obj)
 
     def set_player(self, player_obj: Player) -> None:
         self.object_list.append(player_obj)
@@ -64,9 +69,23 @@ def create_game() -> Game:
     game_instance.game_interface = DefaultUserInterface()
     # ... Carga de Jugador (Lo que signifique eso ...)
     # player_obj = create_player_from_sprite("./resources/.../...")
+
+    game_instance.event_handler.add_event_actions(
+        KeyboardEventAction(
+            key=(pygame_constants.QUIT, None),
+            target_method=lambda: game_instance.stop() and pygame.quit()
+        )
+    )
+
+    asset_obj = None
+    asset_obj = assets_default.from_image_resource('./jam_session/resources/characters/pj.png', x=400, y=400)
+    if asset_obj:
+        game_instance.game_interface.layer_objects.add(asset_obj)
+
     player_obj = None
     if player_obj:
         game_instance.set_player(player_obj)
+    
     # ... Carga de Nivel (Lo que signifique eso ...)
 
     return game_instance
