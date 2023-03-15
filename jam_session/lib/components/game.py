@@ -45,7 +45,8 @@ class Game:
 
     def include_asset(self, asset_obj: Asset) -> None:
         self.object_list.append(asset_obj)
-        self.game_interface.add_asset(asset_obj)
+        self.game_interface.include_object(asset_obj)
+
 
     def set_player(self, player_obj: Player) -> None:
         self.object_list.append(player_obj)
@@ -76,11 +77,17 @@ def create_game() -> Game:
             target_method=lambda: game_instance.stop() and pygame.quit()
         )
     )
+    game_instance.event_handler.add_event_actions(
+        KeyboardEventAction(
+            key=(pygame_constants.KEYUP, pygame_constants.K_q),
+            target_method=lambda: game_instance.stop() and pygame.quit()
+        )
+    )
 
-    asset_obj = None
+    game_instance.game_interface.set_background('./jam_session/resources/backgrounds/bg_office.png')
     asset_obj = assets_default.from_image_resource('./jam_session/resources/characters/pj.png', x=400, y=400)
     if asset_obj:
-        game_instance.game_interface.layer_objects.add(asset_obj)
+        game_instance.include_asset(asset_obj=asset_obj)
 
     player_obj = None
     if player_obj:

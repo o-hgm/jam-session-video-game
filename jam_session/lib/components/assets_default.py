@@ -8,14 +8,15 @@ class Asset(pygame.sprite.Sprite):
     """
     def __init__(self, x: int = 0, y: int = 0, *groups: pygame.sprite.AbstractGroup) -> None:
         super().__init__(*groups)
-        self.x = x
-        self.y = y
+        self.coord_x = x
+        self.coord_y = y
 
     def setup(self, *args, **kwargs) -> None:
         self.rect = self.image.get_rect()
-        
+        self.update_rect_position()
+
     def get_coordinates(self) -> Tuple[int, int]:
-        return self.x, self.y
+        return self.coord_x, self.coord_y
 
     def update_rect_position(self) -> None:
         self.rect.center = self.get_coordinates()
@@ -27,8 +28,8 @@ class Asset(pygame.sprite.Sprite):
 
 def from_image_resource(img_path: str, x: int = 0, y: int = 0) -> Asset:
     asset_obj = Asset()
-    asset_obj.x = x
-    asset_obj.y = y
+    asset_obj.coord_x = x
+    asset_obj.coord_y = y
     asset_obj.image = pygame.image.load(img_path)
     asset_obj.setup()
 

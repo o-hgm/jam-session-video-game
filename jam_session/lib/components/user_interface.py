@@ -4,7 +4,7 @@ import pygame.sprite
 
 
 class DefaultUserInterface:
-    DEFAULT_COLOR = (100,0,0)
+    DEFAULT_COLOR = (0,0,0)
 
     def __init__(self, ui_width: int = 800, ui_height: int = 800) -> None:
         self.ui_width = ui_width
@@ -25,11 +25,20 @@ class DefaultUserInterface:
         pygame.init()
         self.ui_surface = pygame.display.set_mode(self.get_size())
 
+    def set_background(self, bg_path: str) -> None:
+        self.layer_background = pygame.image.load(bg_path)
+    def include_object(self, obj) -> None:
+        self.layer_objects.add(obj)
+
     def draw(self):
         self.ui_surface.fill(self.DEFAULT_COLOR)
         if self.layer_background:
-            self.ui_surface.blit(self.layer_background)
+            self.ui_surface.blit(self.layer_background, self.layer_background.get_rect())
         # How to collide
-        self.layer_objects.draw(self.ui_surface)
-        self.layer_characters.draw(self.ui_surface)
+        sp = self.layer_objects.sprites()[0]
+        if sp:
+            self.ui_surface.blit(sp.image, sp.rect)
+        
+        pygame.display.update()
+        # self.layer_characters.draw(self.ui_surface)
 
