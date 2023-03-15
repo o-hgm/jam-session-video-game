@@ -35,10 +35,7 @@ class DefaultUserInterface:
         if self.layer_background:
             self.ui_surface.blit(self.layer_background, self.layer_background.get_rect())
         # How to collide
-        sp = self.layer_objects.sprites()[0]
-        if sp:
-            self.ui_surface.blit(sp.image, sp.rect)
-        
+        self.layer_objects.draw(self.ui_surface)
+        self.layer_characters.draw(self.ui_surface)
         pygame.display.update()
-        # self.layer_characters.draw(self.ui_surface)
-
+        

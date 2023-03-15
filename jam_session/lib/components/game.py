@@ -4,7 +4,7 @@ import pygame
 import pygame.sprite
 from pygame import locals as pygame_constants
 
-from jam_session.lib.components import assets_default
+from jam_session.lib.components import assets_default, assets_player
 from jam_session.lib.components.assets_default import Asset
 from jam_session.lib.components.assets_player import Player
 from jam_session.lib.components.assets_npc import NoPlayerCharacter
@@ -25,7 +25,6 @@ class Game:
     def __init__(self) -> None:
         self.event_handler: DefaultEventHandler = None
         self.game_interface: DefaultUserInterface = None
-        self.object_list: List[Asset] = []
         self.game_clock = pygame.time.Clock() 
         self.group_container: pygame.sprite.Group = pygame.sprite.Group()
         self.is_running = False
@@ -49,9 +48,10 @@ class Game:
 
 
     def set_player(self, player_obj: Player) -> None:
-        self.object_list.append(player_obj)
-        self.event_handler.add_event_actions(*player_obj.get_event_actions())
-        self.game_interface.add_asset(player_obj)
+        self.group_container.add(player_obj)
+        player_actions = player_obj.get_event_actions()
+        self.event_handler.add_event_actions(*player_actions)
+        self.game_interface.layer_characters.add(player_obj)
 
         # ... All the logic required to set-up a Player instance as an Active Player.
 
@@ -74,22 +74,19 @@ def create_game() -> Game:
     game_instance.event_handler.add_event_actions(
         KeyboardEventAction(
             key=(pygame_constants.QUIT, None),
-            target_method=lambda: game_instance.stop() and pygame.quit()
+            method_to_call=lambda: game_instance.stop() and pygame.quit()
         )
     )
     game_instance.event_handler.add_event_actions(
         KeyboardEventAction(
             key=(pygame_constants.KEYUP, pygame_constants.K_q),
-            target_method=lambda: game_instance.stop() and pygame.quit()
+            method_to_call=lambda: game_instance.stop() and pygame.quit()
         )
     )
 
     game_instance.game_interface.set_background('./jam_session/resources/backgrounds/bg_office.png')
-    asset_obj = assets_default.from_image_resource('./jam_session/resources/characters/pj.png', x=400, y=400)
-    if asset_obj:
-        game_instance.include_asset(asset_obj=asset_obj)
 
-    player_obj = None
+    player_obj = assets_player.create_default_player(200, 200)
     if player_obj:
         game_instance.set_player(player_obj)
     

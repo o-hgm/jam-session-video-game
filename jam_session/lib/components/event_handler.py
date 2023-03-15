@@ -24,14 +24,14 @@ class KeyboardEventAction(EventAction):
     def __init__(self, *args, **kwargs) -> None:
         try:
             self.key = kwargs['key']
-            self.method_to_call = kwargs['target_method']
+            self.method_to_call = kwargs['method_to_call']
             self.target_object = kwargs.get('target_object')
             self.event_context = kwargs.get('event_context', dict())
         except KeyError as e:
             raise AttributeError('KeyboardEventHandler must include attribute %s' % e)
 
     def __repr__(self) -> str:
-        f"KeyboardEventHandler[Key={self.key}] => {self.method_to_call}"
+        return f"KeyboardEventHandler[Key={self.key}] => {self.method_to_call}"
     
     def __str__(self) -> str:
         return f"Event {self.key} calls to {self.method_to_call}"
