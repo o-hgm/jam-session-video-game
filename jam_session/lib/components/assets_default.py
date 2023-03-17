@@ -10,6 +10,7 @@ class Asset(pygame.sprite.Sprite):
         super().__init__(*groups)
         self.x = x
         self.y = y
+        self.has_collision = False
 
     def setup(self, *args, **kwargs) -> None:
         self.rect = self.image.get_rect()

@@ -1,6 +1,8 @@
-from typing import Tuple
+from typing import List, Tuple
 import pygame
 import pygame.sprite
+
+from jam_session.lib.components.assets_default import Asset
 
 
 class DefaultUserInterface:
@@ -26,10 +28,27 @@ class DefaultUserInterface:
         self.ui_surface = pygame.display.set_mode(self.get_size())
 
     def set_background(self, bg_path: str) -> None:
-        self.layer_background = pygame.image.load(bg_path)
+        self.layer_background = pygame.image.load(bg_path).convert_alpha()
+    
     def include_object(self, obj) -> None:
         self.layer_objects.add(obj)
 
+    def set_wall(self, wall_path: str) -> None:
+        self.layer_collision = pygame.image.load(wall_path).convert_alpha()
+        self.layer_collision_mask = pygame.mask.from_surface(self.layer_collision)
+    
+    def is_character_hit_wall(self) -> List[Asset]:
+        result_list = []
+        for img in self.layer_characters.sprites():
+            mask = pygame.mask.from_surface(img.image)
+            offset = img.rect.x - self.layer_collision.get_rect().x, img.rect.y - self.layer_collision_mask.get_rect().y
+
+            if self.layer_collision_mask.overlap(mask, offset=offset):
+                result_list.append(img)
+        
+        return result_list
+
+    
     def draw(self):
         self.ui_surface.fill(self.DEFAULT_COLOR)
         if self.layer_background:

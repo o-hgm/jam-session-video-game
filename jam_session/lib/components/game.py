@@ -32,8 +32,9 @@ class Game:
 
     def start(self) -> None:
         self.is_running = True
-        self.game_interface.initialize()
         while self.is_running:
+            for item in self.game_interface.is_character_hit_wall():
+                item.has_collision = True
             self.event_handler.check_events()
             self.group_container.update()
             self.game_interface.draw()
@@ -70,6 +71,7 @@ def create_game() -> Game:
     game_instance.game_interface = DefaultUserInterface()
     # ... Carga de Jugador (Lo que signifique eso ...)
     # player_obj = create_player_from_sprite("./resources/.../...")
+    game_instance.game_interface.initialize()
 
     game_instance.event_handler.add_event_actions(
         KeyboardEventAction(
@@ -84,8 +86,8 @@ def create_game() -> Game:
         )
     )
 
-    game_instance.game_interface.set_background('./jam_session/resources/backgrounds/bg_office.png')
-
+    game_instance.game_interface.set_background('./jam_session/resources/places/main_office/bg_office.png')
+    game_instance.game_interface.set_wall('./jam_session/resources/places/main_office/bg_wall.png')
     player_obj = assets_player.create_default_player(200, 200)
     if player_obj:
         game_instance.set_player(player_obj)

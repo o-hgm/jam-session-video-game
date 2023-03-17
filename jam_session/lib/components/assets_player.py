@@ -40,8 +40,23 @@ class Player(Asset):
             self.x += x_update
             self.y += y_update
 
+    def handle_collision_flag(self):
+        if self.has_collision:
+            self.invert_move_direction()
+
+    def invert_move_direction(self):
+        self.move_direction[0] *= -1
+        self.move_direction[1] *= -1
+
+    def clear_collision_flag(self):
+        if self.has_collision:
+            self.has_collision = False
+            self.move_status = Player.STATUS_MOVE_IDLE
+
     def update(self, *args: Any, **kwargs: Any) -> None:
+        self.handle_collision_flag()
         self.update_asset_position()
+        self.clear_collision_flag()
         return super().update(*args, **kwargs)
 
     def get_event_actions(self) -> Tuple[KeyboardEventAction]:
@@ -91,7 +106,7 @@ class Player(Asset):
     
 
     def set_move_direction(self, direction):
-        self.move_direction = direction
+        self.move_direction = list(direction)
         self.current_frame = self.move_status
 
     def set_move_status(self, status):
