@@ -13,15 +13,14 @@ class Asset(Sprite):
         # Call the parent class (Sprite) constructor
         super().__init__()
 
-        self.position_x = 0
-        self.position_y = 0
+        self.x = 0
+        self.y = 0
 
     def setup(self, *args, **kwargs) -> None:
         self.rect = self.image.get_rect()
         
-
     def get_coordinates(self) -> Tuple[int, int]:
-        return self.position_x, self.position_y
+        return self.x, self.y
 
     def update_rect_position(self) -> None:
         self.rect.center = self.get_coordinates()
@@ -33,8 +32,8 @@ class Asset(Sprite):
 
 def from_image_resource(img_path: str, x_origin: int = 0, y_origin: int = 0) -> Asset:
     asset_obj = Asset()
-    asset_obj.position_x = x_origin
-    asset_obj.position_y = y_origin
+    asset_obj.x = x_origin
+    asset_obj.y = y_origin
     asset_obj.image = pygame.image.load(img_path)
     asset_obj.setup()
 

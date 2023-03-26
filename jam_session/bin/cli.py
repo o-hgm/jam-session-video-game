@@ -1,5 +1,5 @@
 import click
-from jam_session.game import start_game
+from jam_session.bin.game import start_game
 
 @click.command()
 def cli():
