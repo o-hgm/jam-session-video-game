@@ -2,6 +2,8 @@ from typing import List, Tuple
 import pygame
 import pygame.sprite
 
+import pygame_gui
+
 from jam_session.lib.components.assets_default import Asset
 
 
@@ -11,6 +13,10 @@ class DefaultUserInterface:
     def __init__(self, ui_width: int = 800, ui_height: int = 800) -> None:
         self.ui_width = ui_width
         self.ui_height = ui_height
+
+        self.ui_manager = None # pygame_gui.UIManager((self.ui_width, self.ui_height), "theme.json")
+
+        self.text_action_panel = None # 
 
         self.ui_surface: pygame.Surface = None
         
@@ -26,6 +32,17 @@ class DefaultUserInterface:
     def initialize(self) -> None:
         pygame.init()
         self.ui_surface = pygame.display.set_mode(self.get_size())
+        self.ui_manager = pygame_gui.UIManager((self.ui_width, self.ui_height), "theme.json")
+
+        self.text_action_panel = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect(
+                (0, 300),
+                (100, 100),
+            ),
+            starting_layer_height=1,
+            manager=self.ui_manager,
+        )
+
 
     def set_background(self, bg_path: str) -> None:
         self.layer_background = pygame.image.load(bg_path).convert_alpha()

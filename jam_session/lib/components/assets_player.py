@@ -30,7 +30,7 @@ class Player(Asset):
     def __init__(self, *groups: pygame.sprite.AbstractGroup) -> None:
         super().__init__(*groups)
         self.position_update_units = 5
-        self.move_direction = Player.MOVE_UP
+        self.move_direction = list(Player.MOVE_UP)
         self.move_status = Player.STATUS_MOVE_IDLE
 
     def update_asset_position(self) -> None:
@@ -160,3 +160,6 @@ def create_default_player(x: int = 0, y: int = 0) -> Asset:
     asset_obj.setup()
 
     return asset_obj
+
+def create_animated_player(x: int = 0, y: int = 0) -> Asset:
+    pass
