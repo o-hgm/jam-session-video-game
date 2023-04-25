@@ -1,5 +1,7 @@
 import pygame
 import pygame.draw
+import pygame_gui
+
 # Initialize pygame
 pygame.init()
 
@@ -40,14 +42,21 @@ class GameEngine:
         self.clock = pygame.time.Clock()
         self.fps = fps
         self.running = True
+        self.user_interface = None
 
     def handle_events(self):
+        key_event = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
             if event.type == pygame.KEYDOWN:
-                return event.key
+                key_event = event.key
+
+            # Pass events to pygame_gui manager
+            self.user_interface.manager.process_events(event)
+
+        return key_event
 
     def main_loop(self, scene, player, user_interface):
         while self.running:
@@ -60,6 +69,47 @@ class GameEngine:
 
         pygame.quit()
 
+
+class UserInterfaceInteractive:
+    def __init__(self, bg_color, game_engine):
+        self.bg_color = bg_color
+        self.manager = pygame_gui.UIManager((game_engine.screen.get_width(), game_engine.screen.get_height()))
+        
+        self.game_engine = game_engine
+        game_engine.user_interface = self
+
+        self.build_user_interface()
+
+
+    def build_user_interface(self):
+        self.ui_dialog_panel = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect(
+                (0, int(self.game_engine.screen.get_height() * 2/3)), 
+                (self.game_engine.screen.get_width(), int(self.game_engine.screen.get_height() * 1/3))),
+            starting_layer_height=1,
+            manager=self.manager
+        )
+
+        # Create a text box for the dialog
+        self.ui_dialog_text_box = pygame_gui.elements.UITextBox(
+            html_text="",
+            relative_rect=pygame.Rect((20, 20), (self.ui_dialog_panel.rect.width - 40, self.ui_dialog_panel.rect.height - 40)),
+            manager=self.manager,
+            container=self.ui_dialog_panel,
+            anchors={"left": "left", "right": "right", "top": "top", "bottom": "bottom"},
+        )
+    
+    def update_dialog(self, text):
+        self.ui_dialog_text_box.set_text(text)
+
+
+    def draw(self, screen, scene, player):
+        screen.fill(self.bg_color)
+        scene.render(screen, player.position)
+        player.render(screen, scene)
+
+        self.manager.update(1/self.game_engine.fps)
+        self.manager.draw_ui(screen)
 
 class UserInterface:
     def __init__(self, bg_color):
@@ -100,8 +150,9 @@ class Player:
 import pygame
 
 class Scene:
-    def __init__(self, map_data, grid_size, drawable_surface_x, drawable_surface_y):
+    def __init__(self, map_data, grid_size, drawable_surface_x, drawable_surface_y, user_interface):
         self.map_data = map_data
+        self.user_interface = user_interface
         self.grid_size = grid_size
         self.drawable_surface_x = drawable_surface_x
         self.drawable_surface_y = drawable_surface_y
@@ -110,6 +161,13 @@ class Scene:
         if 0 <= x < len(self.map_data[0]) and 0 <= y < len(self.map_data):
             return self.map_data[y][x] == 0
         return False
+
+    def is_colliding(self, x, y):
+        if y >= 5 and y <= 15:
+            if x >= 10 and x <= 20:
+                return (True, "Asset")
+        
+        return (False, None)
 
     def visible_range(self, player_position):
         min_x = max(0, player_position[0] - self.drawable_surface_x // 2)
@@ -137,6 +195,9 @@ class Scene:
                 self.grid_size,
                 ),
                 )
+
+    def handle_interaction(self, player, asset):
+        self.user_interface.update_dialog(f"New interaction with {asset}")
 
     def update(self, player, key_event):
         pass  # No update needed for the scene in this example, but you can add more logic here if needed.
@@ -209,6 +270,12 @@ class SpritePlayer:
                 self.position = (new_x, new_y)
                 self.current_sprite = self.sprite_map[self.current_action][self.current_frame]
 
+            is_colliding, target_asset = scene.is_colliding(new_x, new_y)
+            print(is_colliding, target_asset)
+            if is_colliding:
+                scene.handle_interaction(self, target_asset)
+
+
     def render(self, screen, scene):
         min_x, min_y = scene.visible_range(self.position)
         screen.blit(self.current_sprite, ((self.position[0] - min_x) * scene.grid_size, (self.position[1] - min_y) * scene.grid_size))
@@ -218,9 +285,9 @@ class SpritePlayer:
 def main():
     # Create instances of game components
     game_engine = GameEngine(GAME_WIDTH, GAME_HEIGHT, FPS)
-    user_interface = UserInterface(BG_COLOR)
+    user_interface = UserInterfaceInteractive(BG_COLOR, game_engine)
     player = SpritePlayer((1, 1), "sprite_sheet_2.png", 64)
-    scene = Scene(generate_map(), GRID_SIZE, DRAWABLE_SURFACE_X, DRAWABLE_SURFACE_Y)
+    scene = Scene(generate_map(), GRID_SIZE, DRAWABLE_SURFACE_X, DRAWABLE_SURFACE_Y, user_interface)
 
     # Run the game
     game_engine.main_loop(scene, player, user_interface)
