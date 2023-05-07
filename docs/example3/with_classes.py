@@ -3,6 +3,8 @@ import pygame.draw
 import pygame_gui
 import pygame.key
 
+import pytmx
+
 # Initialize pygame
 pygame.init()
 
@@ -20,8 +22,8 @@ FPS = 60
 BG_COLOR = (50, 50, 50)
 BG_GAME_COLOR = (100, 100, 100)
 # Define grid settings
-GRID_SIZE = 96
-MAP_WIDTH, MAP_HEIGHT = 50, 50
+GRID_SIZE = 64
+MAP_WIDTH, MAP_HEIGHT = 10, 7
 
 DRAWABLE_SURFACE_X = int(WINDOW_DISPLAY_WIDTH / GRID_SIZE)
 DRAWABLE_SURFACE_Y = int(WINDOW_DISPLAY_HEIGHT / GRID_SIZE)
@@ -62,7 +64,7 @@ class GameEngine:
 
         return key_event
 
-    def main_loop(self, scene, player, user_interface):
+    def main_loop(self, scene: "Scene", player: "SpritePlayer", user_interface: "UserInterfaceInteractive"):
         while self.running:
             self.clock.tick(self.fps)
             key_event = self.handle_events()
@@ -96,7 +98,7 @@ class UserInterfaceInteractive:
                     int(self.game_engine.screen.get_height() * 1 / 3),
                 ),
             ),
-            starting_layer_height=1,
+            #starting_layer_height=1,
             manager=self.manager,
         )
         self.ui_dialog_panel.hide()
@@ -175,7 +177,7 @@ class UserInterfaceInteractive:
     def update_dialog(self, text):
         self.ui_dialog_text_box.set_text(" " + text)
 
-    def draw(self, screen, scene, player):
+    def draw(self, screen, scene: "Scene", player: "Player"):
         screen.fill(self.bg_color)
         scene.render(screen, player.position)
         player.render(screen, scene)
@@ -230,24 +232,30 @@ class Player:
 
 
 import pygame
-
+from pytmx import load_pygame
 
 class Scene:
     def __init__(
         self,
-        map_data,
         grid_size,
         drawable_surface_x,
         drawable_surface_y,
         user_interface,
+        map_file,
     ):
-        self.map_data = map_data
+        self.map_data = load_pygame(map_file)
         self.user_interface = user_interface
         self.grid_size = grid_size
         self.drawable_surface_x = drawable_surface_x
         self.drawable_surface_y = drawable_surface_y
 
     def is_walkable(self, x, y):
+        print(x, y)
+        map_tile = self.map_data.get_tile_image(x, y, 1)
+        print(map_tile)
+        if map_tile is not None:
+            return False
+        return True
         if 0 <= x < len(self.map_data[0]) and 0 <= y < len(self.map_data):
             return self.map_data[y][x] == 0
         return False
@@ -260,33 +268,30 @@ class Scene:
         return (False, None)
 
     def visible_range(self, player_position):
-        min_x = max(0, player_position[0] - self.drawable_surface_x // 2)
-        min_y = max(0, player_position[1] - self.drawable_surface_y // 2)
+        min_x = max(1, player_position[0] - self.drawable_surface_x // 2)
+        min_y = max(1, player_position[1] - self.drawable_surface_y // 2)
         return min_x, min_y
 
-    def render(self, screen, player_position):
+    def render(self, screen: "pygame.Surface", player_position):
         min_x, min_y = self.visible_range(player_position)
         max_x, max_y = min_x + self.drawable_surface_x, min_y + self.drawable_surface_y
 
+        """
+        for layer in self.map_data.layers:
+            pass
+        """
         for y in range(min_y, max_y):
             for x in range(min_x, max_x):
-                try:
-                    cell_color = (
-                        (200, 200, 200) if self.map_data[y][x] == 0 else (100, 100, 100)
-                    )
-                except:
-                    cell_color = (100, 0, 0)
+                tile_obj = self.map_data.get_tile_image(x, y, 0)
+                if tile_obj is None:
+                    tile_obj = self.map_data.get_tile_image(x, y, 1)
 
-                pygame.draw.rect(
-                    screen,
-                    cell_color,
-                    (
-                        (x - min_x) * self.grid_size,
-                        (y - min_y) * self.grid_size,
-                        self.grid_size,
-                        self.grid_size,
-                    ),
-                )
+                if tile_obj:
+                    map_coordinates = (
+                            (x - min_x) * self.grid_size,
+                            (y - min_y) * self.grid_size
+                    )
+                    screen.blit(tile_obj, map_coordinates)
 
     def handle_interaction(self, player, asset):
         self.user_interface: UserInterfaceInteractive
@@ -405,11 +410,11 @@ def main():
     # El tamaño de sprite afecta a la collision
     player = SpritePlayer((1, 1), "Sprite-Wei.png", 128)
     scene = Scene(
-        generate_map(),
         GRID_SIZE,
         DRAWABLE_SURFACE_X,
         DRAWABLE_SURFACE_Y,
         user_interface,
+        "map_1.tmx"
     )
 
     # Run the game
