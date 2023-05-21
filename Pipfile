@@ -8,6 +8,7 @@ pygame = "*"
 click = "*"
 pygame-gui = "*"
 jam-session-pygame = {editable = true, path = "."}
+pytmx = "*"
 
 [dev-packages]
 
