@@ -8,7 +8,10 @@ import pytmx
 # Initialize pygame
 pygame.init()
 
-
+"""
+Información para generar el mapa y dibujar el grid. En la versión anterior se utilizaba 
+para dibujar los 'rect' que representaban suelo, muralla y personaje.
+"""
 PLAYER_COLOR = (0, 255, 0)
 # Dummy player_position, to be replaced with the actual player character
 player_position = (1, 1)
@@ -25,20 +28,18 @@ BG_GAME_COLOR = (100, 100, 100)
 GRID_SIZE = 64
 MAP_WIDTH, MAP_HEIGHT = 10, 7
 
+"""
+Indica el número de celdas disponibles
+"""
 DRAWABLE_SURFACE_X = int(WINDOW_DISPLAY_WIDTH / GRID_SIZE)
 DRAWABLE_SURFACE_Y = int(WINDOW_DISPLAY_HEIGHT / GRID_SIZE)
 
 
-# Generate a simple map with walkable (0) and non-walkable (1) cells
-def generate_map():
-    game_map = [[0 for _ in range(MAP_WIDTH)] for _ in range(MAP_HEIGHT)]
-    for i in range(5, 15):
-        for j in range(10, 20):
-            game_map[i][j] = 1
-    return game_map
-
-
 class GameEngine:
+    """
+    Representa el controlador principal del juego, conecta la interfaz con los distintos elementos del juego.
+    
+    """
     def __init__(self, width, height, fps):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
@@ -250,26 +251,36 @@ class Scene:
         self.drawable_surface_y = drawable_surface_y
 
     def is_walkable(self, x, y):
-        print(x, y)
-        map_tile = self.map_data.get_tile_image(x, y, 1)
-        print(map_tile)
-        if map_tile is not None:
+        if x < 0 or y < 0:
             return False
-        return True
-        if 0 <= x < len(self.map_data[0]) and 0 <= y < len(self.map_data):
-            return self.map_data[y][x] == 0
+        base_layer = self.map_data.get_layer_by_name("Base")
+        base_layer_index = self.map_data.layers.index(base_layer)
+        tile_gid_info = self.map_data.get_tile_gid(x, y, base_layer_index)
+        if tile_gid_info != 0:
+            return True
         return False
+        
 
     def is_colliding(self, x, y):
-        if y >= 5 and y <= 15:
-            if x >= 10 and x <= 20:
-                return (True, "Asset")
+        """
+        Se define como collision aquella en la que la capa tiene la propiedad Asset.
+        Esto se puede generar al principio.
+        """
+        asset_layers = [
+            asset for asset in self.map_data.visible_layers 
+            if ('Asset' in asset.properties and asset.properties['Asset'])
+        ]
 
+        for asset_obj in asset_layers:
+            asset_obj_index = self.map_data.layers.index(asset_obj)
+            gid_id = self.map_data.get_tile_gid(x, y, asset_obj_index)
+            if gid_id != 0:
+                return (True, asset_obj)
         return (False, None)
 
     def visible_range(self, player_position):
-        min_x = max(1, player_position[0] - self.drawable_surface_x // 2)
-        min_y = max(1, player_position[1] - self.drawable_surface_y // 2)
+        min_x = max(0, player_position[0] - self.drawable_surface_x // 2)
+        min_y = max(0, player_position[1] - self.drawable_surface_y // 2)
         return min_x, min_y
 
     def render(self, screen: "pygame.Surface", player_position):
@@ -277,26 +288,28 @@ class Scene:
         max_x, max_y = min_x + self.drawable_surface_x, min_y + self.drawable_surface_y
 
         """
-        for layer in self.map_data.layers:
-            pass
+        Draw Map Layer
         """
-        for y in range(min_y, max_y):
-            for x in range(min_x, max_x):
-                tile_obj = self.map_data.get_tile_image(x, y, 0)
-                if tile_obj is None:
-                    tile_obj = self.map_data.get_tile_image(x, y, 1)
-
-                if tile_obj:
-                    map_coordinates = (
-                            (x - min_x) * self.grid_size,
-                            (y - min_y) * self.grid_size
-                    )
-                    screen.blit(tile_obj, map_coordinates)
+        for map_layer in self.map_data.visible_layers:
+            """
+            En visible layers se muestran también las agrupadas en assets
+            """
+            if isinstance(map_layer, pytmx.TiledTileLayer):
+                for x, y, tile_obj in map_layer.tiles():
+                    x_in_range = x >= min_x and x <= max_x
+                    y_in_range = y >= min_y and y <= max_y 
+                    if x_in_range and y_in_range:
+                        map_coordinates = (
+                                (x - min_x) * self.grid_size,
+                                (y - min_y) * self.grid_size
+                        )
+                        screen.blit(tile_obj, map_coordinates)
+        
 
     def handle_interaction(self, player, asset):
         self.user_interface: UserInterfaceInteractive
         self.user_interface.ui_dialog_panel.show()
-        self.user_interface.update_dialog(f"New interaction with {asset}")
+        self.user_interface.update_dialog(f"New interaction with {asset.name}")
         self.user_interface.enable_action_buttons({})
         
     def clear_interaction(self, player):
@@ -324,6 +337,12 @@ class SpritePlayer:
             "direction_right",
             "direction_up",
         ]
+        self.render_offset = {
+            "direction_down": (0, 1),
+            "direction_left":  (1, 0),
+            "direction_right": (-1, 0),
+            "direction_up": (0, -1),
+        }
         self.current_action = "direction_down"
         self.current_frame = 0
         self.position = position
@@ -383,10 +402,11 @@ class SpritePlayer:
                 self.current_frame
             ]
 
-            if scene.is_walkable(new_x, new_y):
+            is_walkable = scene.is_walkable(new_x, new_y)
+            is_colliding, target_asset = scene.is_colliding(new_x, new_y)
+            if is_walkable and not is_colliding:
                 self.position = (new_x, new_y)
 
-            is_colliding, target_asset = scene.is_colliding(new_x, new_y)
             if is_colliding:
                 scene.handle_interaction(self, target_asset)
             else:
@@ -397,8 +417,8 @@ class SpritePlayer:
         screen.blit(
             self.current_sprite,
             (
-                (self.position[0] - min_x) * scene.grid_size,
-                (self.position[1] - min_y) * scene.grid_size,
+                (self.position[0] - min_x) * scene.grid_size, # + self.render_offset[self.current_action][0] * scene.grid_size * 1/2,
+                (self.position[1] - min_y) * scene.grid_size # + self.render_offset[self.current_action][1] * scene.grid_size * 1/2,
             ),
         )
 

@@ -19,6 +19,15 @@ MAP_WIDTH, MAP_HEIGHT = 50, 50
 DRAWABLE_SURFACE_X = int(WINDOW_DISPLAY_WIDTH / GRID_SIZE)
 DRAWABLE_SURFACE_Y = int(WINDOW_DISPLAY_HEIGHT / GRID_SIZE)
 
+"""
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 P 0 0 1 1 1 1 0 0 0 0 0
+0 0 0 0 0 1 1 1 1 0 0 0 0 0 
+0 0 0 0 0 1 1 1 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+"""
 
 # Generate a simple map with walkable (0) and non-walkable (1) cells
 def generate_map():
