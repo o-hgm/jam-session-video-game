@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="left-up" width="8" height="8" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="22">
+ <tileset firstgid="1" source="../tiled/resource/map_spritesheet.tsx"/>
+ <tileset firstgid="65" source="../tiled/resource/objetostest.tsx"/>
+ <tileset firstgid="81" source="../tiled/resource/reboleomesatest128x128.tsx"/>
+ <tileset firstgid="85" source="../tiled/resource/map_spritesheet.tsx"/>
+ <layer id="1" name="suelo y paredes" width="8" height="8">
+  <data encoding="csv">
+1,2,2,2,0,0,2,3,
+9,11,11,11,0,0,10,11,
+34,33,33,33,33,33,33,43,
+34,33,33,33,33,33,33,33,
+34,33,33,33,33,33,33,43,
+34,33,33,33,33,52,58,53,
+34,33,33,33,33,49,49,59,
+44,35,35,35,35,60,51,61
+</data>
+ </layer>
+ <layer id="6" name="puerta" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,87,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="mesa becaria" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+65,0,65,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="silla" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+67,0,67,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="ordenadores" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+66,0,66,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="mesa de jefatura" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,81,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="9" name="colisiones">
+  <object id="10" x="6.66667" y="9.33333" width="245.333" height="50.6667"/>
+  <object id="11" x="394.667" y="8" width="110.667" height="46.6667"/>
+  <object id="12" x="321.5" y="330.5" width="19" height="53.5"/>
+  <object id="13" x="319" y="455.5" width="21" height="51"/>
+  <object id="14" x="10.6667" y="268" width="230.667" height="38.6667"/>
+  <object id="17" x="-13.3333" y="517.333" width="577.333" height="6.66667"/>
+  <object id="18" x="514.667" y="-98.6667" width="33.3333" height="657.333"/>
+  <object id="20" x="-33.3333" y="-112" width="20" height="652"/>
+  <object id="21" x="326.667" y="322.667" width="185.333" height="2.66667"/>
+ </objectgroup>
+ <objectgroup id="10" name="mesa">
+  <object id="15" x="81.3333" y="206.667" width="96" height="32"/>
+ </objectgroup>
+</map>
