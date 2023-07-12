@@ -12,6 +12,7 @@ pytmx = "*"
 python-dotenv = "*"
 requests = "*"
 ipdb = "*"
+watchdog = {extras = ["watchmedo"], version = "*"}
 
 [dev-packages]
 

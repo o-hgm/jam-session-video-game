@@ -1,0 +1,1 @@
+[Narrador] Acabas de llegar a la oficina, te encuentras frente a tu escritorio. La oficina es pequeña y solo cuenta con una maquina de cafe antigua y algunas plantas de plastico. La unica mesa que se encuentra separada es la del jefe, que está colocada en un cubiculo independiente.
