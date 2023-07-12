@@ -1,58 +1,51 @@
-import pygame
-import pygame_gui
+import sys
+from ui import Ui
+import pygame as pg
+from settings import *
+from character import Character
+from player import Player
 
-pygame.init()
+class Game:
+    def __init__(self):
+        pg.init()
+        self.display = pg.display.set_mode((WIDTH, HEIGHT))
+        self.clock = pg.time.Clock()
+        self.debug = True
+        self.current_player_frame = 0
+        self.playergroup = pg.sprite.Group()
+        self.npcgroup = pg.sprite.Group()
+        self.player = Player('Sprite_tyler_front.png', self)
+        self.mary = Character('Sprite_mary_front.png', 400, 400)
+        self.ui = Ui(self.display)
 
-pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((800, 600))
+    def run(self):
+        while 1:
+            dt = self.clock.tick(FPS) / 1000
 
-background = pygame.Surface((800, 600))
-background.fill(pygame.Color('#000000'))
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_F1:
+                        debug = not debug
 
-manager = pygame_gui.UIManager((800,600))
-#ui_window = pygame_gui.elements.ui_window.UIWindow(rect=pygame.Rect((0,400),(800,200)),
-#                                                   manager= manager,
-#                                                   window_display_title='Hahá Its a window!',
-#                                                   visible= True)
-ui_panel = pygame_gui.elements.ui_panel.UIPanel(relative_rect=pygame.Rect((0,400),(800,200)),
-                                                   manager= manager)
+            self.clock.tick(FPS)
+            self.display.fill((128,128,128))
 
-hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100,10), (100, 50)),
-                                             text='Say Hello',
-                                             manager=manager,
-                                             container= ui_panel
-                                            )
+            self.npcgroup.add(self.npc)
+            self.playergroup.add(self.player)
 
-hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100,60), (100, 50)),
-                                             text='Say Hello',
-                                             manager=manager,
-                                             container= ui_panel
-                                            )
+            self.player.update(dt)
+            self.ui.manager.update(dt)
 
-hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100,110), (100, 50)),
-                                             text='Say Hello',
-                                             manager=manager,
-                                             container= ui_panel
-                                            )
+            self.playergroup.draw(self.display)
+            self.npcgroup.draw(self.display)
+            self.ui.draw()
 
-clock = pygame.time.Clock()
-is_running = True
+            self.ui.manager.draw_ui(self.display)
 
-while is_running:
-    time_delta = clock.tick(60)/1000.0
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            is_running = False
+            pg.display.update()
 
-        if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == hello_button:
-                print('Hello World!')
-
-        manager.process_events(event)
-
-    manager.update(time_delta)
-
-    window_surface.blit(background, (0, 0))
-    manager.draw_ui(window_surface)
-
-    pygame.display.update()
+if __name__ == '__main__':
+    game = Game()
+    game.run()
