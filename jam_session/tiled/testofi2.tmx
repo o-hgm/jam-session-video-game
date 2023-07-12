@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="left-up" width="8" height="8" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="14">
+ <tileset firstgid="1" source="saveshit/map_spritesheet.tsx"/>
+ <tileset firstgid="65" source="saveshit/objetostest.tsx"/>
+ <tileset firstgid="129" source="saveshit/reboleomesatest128x128.tsx"/>
+ <layer id="1" name="suelo paredes" width="8" height="8">
+  <data encoding="csv">
+1,2,2,2,0,0,2,3,
+9,10,10,10,0,0,10,11,
+34,33,33,33,33,33,33,43,
+34,33,33,33,33,33,33,33,
+34,33,33,33,33,33,33,43,
+34,33,33,33,33,52,58,53,
+34,33,33,33,33,49,49,59,
+44,35,35,35,35,60,51,61
+</data>
+ </layer>
+ <objectgroup id="9" name="colision paredes">
+  <object id="11" x="20" y="24" width="228" height="20"/>
+  <object id="12" x="400" y="24" width="96" height="20"/>
+ </objectgroup>
+ <layer id="2" name="puerta" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,5,6,0,0,
+0,0,0,0,13,14,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="mesas becaria" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+65,66,65,66,0,0,0,0,
+73,74,73,74,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="colision mesa becaria">
+  <object id="1" x="37.1131" y="288.837" width="206.543" height="22.5906"/>
+ </objectgroup>
+ <layer id="4" name="sillas becaria" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+69,70,69,70,0,0,0,0,
+77,78,77,78,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="ordenadores becaria" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,68,0,68,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="10" name="mesa jefe" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,129,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="7" name="colision mesa jefe">
+  <object id="13" x="84" y="200" width="104" height="36"/>
+ </objectgroup>
+</map>
