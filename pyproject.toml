@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "late-again"
+version = "0.1.0"
+description = "A Game about Consultancy Firms"
+authors = ["Oscar Hafner <ohgm.dev@gmail.com>, Kero <email@host.com>, Salva <email@host.com>, Ark <email@host.com>, Asterisco <email@host.com>"]
+license = "None"
+readme = "README.md"
+packages = [{include = "late_again"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+pygame = "^2.5.0"
+pygame-gui = "^0.6.9"
+pytmx = "^3.32"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+late-again = "late_again.game:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

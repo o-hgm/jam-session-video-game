@@ -1,0 +1,8 @@
+# Python temporary files and folders
+__pycache__/
+*.egg-info/
+*.pyc
+*.pyo
+
+# Environment variables
+.env
