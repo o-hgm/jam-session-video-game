@@ -2,7 +2,7 @@ import pygame
 
 from typing import Tuple
 
-class GameMap:
+class MapController:
     """
     Game Map (Base Class)
 
@@ -19,8 +19,8 @@ class GameMap:
 
     Map is linked to a PyGame Surface, which is used to draw the map on the screen.
     """
-    def __init__(self, game_surface: pygame.Surface) -> None:
-        self.game_surface = game_surface
+    def __init__(self, target_surface: pygame.Surface, **kwargs) -> None:
+        self.game_surface = target_surface
 
     def load_resources(self):
         raise NotImplementedError("load_resources method must be implemented in the subclass")
@@ -42,3 +42,9 @@ class GameMap:
     
     def render_map(self):
         raise NotImplementedError("render_map method must be implemented in the subclass")
+    
+    def get_visible_area(self):
+        raise NotImplementedError("get_visible_area method must be implemented in the subclass")
+    
+    def get_center(self):
+        raise NotImplementedError("get_center method must be implemented in the subclass")

@@ -5,7 +5,6 @@ description = "A Game about Consultancy Firms"
 authors = ["Oscar Hafner <ohgm.dev@gmail.com>, Kero <email@host.com>, Salva <email@host.com>, Ark <email@host.com>, Asterisco <email@host.com>"]
 license = "None"
 readme = "README.md"
-packages = [{include = "late_again"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
@@ -17,6 +16,9 @@ pytmx = "^3.32"
 
 [tool.poetry.scripts]
 late-again = "late_again.game:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
 
 [build-system]
 requires = ["poetry-core"]
