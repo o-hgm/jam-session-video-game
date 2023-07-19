@@ -25,7 +25,7 @@ class MapController:
     def load_resources(self):
         raise NotImplementedError("load_resources method must be implemented in the subclass")
     
-    def is_floor(self, position: Tuple[int, int]) -> bool:
+    def is_walkable(self, position: Tuple[int, int]) -> bool:
         raise NotImplementedError("is_floor method must be implemented in the subclass")
     
     def is_obstacle(self, position: Tuple[int, int]) -> bool:
