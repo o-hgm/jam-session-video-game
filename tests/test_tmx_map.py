@@ -6,9 +6,10 @@ from late_again.components.maps.tmx import TMXMapController
 MAP_PATH = "tests/resources/map_1.tmx"
 MAP_PATH_2 = "tests/resources/map_2.tmx"
 
-SURFACE_WIDTH, SURFACE_HEIGHT = (800, 600)
 # Got from map file
 MAP_TILE_WIDTH, MAP_TILE_HEIGHT = (64, 64)
+# Got from map file
+SURFACE_WIDTH, SURFACE_HEIGHT = (10 * MAP_TILE_WIDTH, 8 * MAP_TILE_HEIGHT)
 # Got from map file
 MAP_TILES_X, MAP_TILES_Y = (30, 20)
 
@@ -108,12 +109,11 @@ def test_tmx_render_move_around(tmx_map_scroll: TMXMapController):
     # 5, 5 is the first point where the visible area changes
     for X in range(5, MAP_TILES_X, 1):
         for Y in range(5, MAP_TILES_Y, 1):
-            print(f"Scroll is in ({X}, {Y})")
             tmx_map_scroll.game_surface.fill((255, 255, 255))
             tmx_map_scroll.set_center(X * MAP_TILE_WIDTH, Y * MAP_TILE_HEIGHT)
             tmx_map_scroll.render_map()
             pygame.display.flip()
-            pygame.time.wait(1000)
+            pygame.time.wait(200)
 
     pygame.display.flip()
 

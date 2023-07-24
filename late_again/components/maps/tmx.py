@@ -206,6 +206,8 @@ class TMXMapController(MapController):
         Render the map on the screen.
         """
         min_x, min_y, max_x, max_y = self.get_visible_area()
+        min_tile_x = min_x // self.tile_w
+        min_tile_y = min_y // self.tile_h
         """
         Draw Map Layer
         """
@@ -223,10 +225,9 @@ class TMXMapController(MapController):
 
                         if x_in_range and y_in_range:
                             map_coordinates = (
-                                    (x * self.tile_w),
-                                    (y * self.tile_h)
+                                (x - min_tile_x) * self.tile_w,
+                                (y - min_tile_y) *  self.tile_h
                             )
-                            print(f"Painting ({x, y}) at {map_coordinates}")
                             self.game_surface.blit(tile_obj, map_coordinates)
                     except TypeError:
                         log.error("Error drawing tile %s" % tile_obj)
