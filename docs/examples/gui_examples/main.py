@@ -1,6 +1,7 @@
 import sys
 from ui import NarratorPanel, UIManager, PlayerPanel
 import pygame as pg
+import pygame_gui as pg_gui
 from settings import *
 from character import Character
 from player import Player
@@ -33,10 +34,29 @@ class Game:
                     if event.key == pg.K_2:
                         self.player_panel.show_panel = not self.player_panel.show_panel
                         self.narrator_panel.show_panel = False
+                    if event.key == pg.K_3:
+                        self.player_panel.create_button(self.ui.manager, 'new button!!!', 580, 20)
                     if event.key == pg.K_ESCAPE:
                         sys.exit()
 
                 self.ui.manager.process_events(event)
+
+                if event.type == pg_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == self.player_panel.text_button:
+                        text_input = self.player_panel.text_entry.get_text()
+                        if (text_input != ""):
+                            print(self.player_panel.text_entry.get_text())
+                            self.player_panel.text_entry.set_text('')
+
+                    if event.ui_element == self.player_panel.button:
+                        self.player_panel.button.kill()
+
+                if self.ui.manager.get_focus_set() and  self.player_panel.text_entry in self.ui.manager.get_focus_set():
+                    if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+                        text_input = self.player_panel.text_entry.get_text()
+                        if (text_input != ""):
+                            print(self.player_panel.text_entry.get_text())
+                            self.player_panel.text_entry.set_text('')
 
             self.clock.tick(FPS)
             self.display.fill((128,128,128))

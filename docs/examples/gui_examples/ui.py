@@ -1,6 +1,6 @@
 import pygame_gui as pg_gui
 import pygame as pg
-from pygame_gui.elements import UITextEntryLine, UITextBox
+from pygame_gui.elements import UITextEntryLine, UITextBox, UIButton
 from pygame_gui.core import ObjectID
 
 
@@ -109,14 +109,7 @@ class PlayerPanel(UiPanel):
     def __init__(self, display, ui):
         super().__init__(display, ui)
         self.create_text_box(ui)
-        self.test_text_entry = UITextEntryLine(
-            relative_rect=pg.Rect((20, self.height - 60), (int(self.width) - 40, 40)),
-            initial_text="",
-            container=self.ui_panel,
-            manager=ui,
-            object_id='#player_text_entry'
-        )
-        self.test_text_entry.set_forbidden_characters('numbers')
+        self.create_text_input(ui)
 
     def create_text_box(self, ui):
         htm_text_block = UITextBox('<b><i>LATE AGAIN: THE GAME</b></i>'
@@ -127,16 +120,34 @@ class PlayerPanel(UiPanel):
                                     '<br><br>'
                                     'Or maybe for another panel, who knows...'
                                     ,
-                                    pg.Rect((20, 20), (int(self.width) - 40, int(self.height) - 80)),
+                                    pg.Rect((20, 20), (int(self.width) - 240, int(self.height) - 80)),
                                     manager=ui,
                                     container=self.ui_panel,
                                     object_id=ObjectID(class_id="@white_text_box",
                                                         object_id="#player_box"))
         htm_text_block.set_active_effect(pg_gui.TEXT_EFFECT_TYPING_APPEAR, params={'time_per_letter': 0.01})
 
-    def update(self):
-        super().update()
+    def create_text_input(self, ui):
+        self.text_entry = UITextEntryLine(
+            pg.Rect((20, self.height - 60), (self.width - 300, 40)),
+            initial_text="",
+            container=self.ui_panel,
+            manager=ui,
+            object_id='#player_text_entry'
+        )
+        self.text_entry.set_forbidden_characters('numbers')
+        self.text_button = UIButton(
+            pg.Rect((self.width - 280, self.height - 60), (60, 40)),
+            'Send',
+            ui,
+            self.ui_panel,
+        )
 
-        text_input = self.test_text_entry.get_text()
-        if (text_input != ""):
-            print(self.test_text_entry.get_text())
+    def create_button(self, ui,text, x = 0, y = 0, width = 200, height = 40 ):
+        self.button = UIButton(
+            pg.Rect((x,y), (width, height)),
+            text,
+            ui,
+            self.ui_panel,
+        )
+
