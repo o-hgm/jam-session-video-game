@@ -10,12 +10,14 @@ class UIManager:
         self.manager = pg_gui.UIManager(
             (self.display.get_width(), self.display.get_height())
         )
+        self.narrator_panel = NarratorPanel(self.display, self.manager)
+        self.player_panel = PlayerPanel(self.display, self.manager)
 
     def update(self, dt):
         self.manager.update(dt)
         self.manager.draw_ui(self.display)
 
-class UiPanel:
+class UIPanel:
     def __init__(self, display, ui):
         self.height = int(display.get_height() * 1 / 3)
         self.width = display.get_width()
@@ -39,7 +41,7 @@ class UiPanel:
         else:
             self.ui_panel.hide()
 
-class NarratorPanel(UiPanel):
+class NarratorPanel(UIPanel):
     def __init__(self, display, ui) -> None:
         super().__init__(display, ui)
         self.create_text_box(ui)
@@ -105,7 +107,7 @@ class NarratorPanel(UiPanel):
                                                         object_id="#narrator_box"))
         htm_text_block.set_active_effect(pg_gui.TEXT_EFFECT_TYPING_APPEAR, params={'time_per_letter': 0.01})
 
-class PlayerPanel(UiPanel):
+class PlayerPanel(UIPanel):
     def __init__(self, display, ui):
         super().__init__(display, ui)
         self.create_text_box(ui)
